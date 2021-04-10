@@ -1,61 +1,114 @@
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-
+import javax.sound.sampled.LineListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
+
+/**
+* @author : zeal
+* @date : 2021/4/10
+*
+* */
 
 public class Analyzer {
-    private static final String[] KEY_WORDS = {"class", "void", "function", "static",
-            "private","public","protected",
-            "char", "int", "boolean", "double", "bool","var",
-            "if", "else", "while", "do", "for",
-            "this", "return", "null", "print"}; //关键字
-    private static final String[] IDENTIFIERS = {}; //标识符
-    private static final String[] CONSTANTS = {}; //常量
-    private static final String[] QUALIFIERS={"abstract","const","event","extern","override","sealed","static","virtual"}; //限定符
-    private static final String[] OPERATORS = {"+","-","*","/","=","(",")","{","}"}; //操作符
 
-    int currentLine = 0;
-
-    private String inputFile = "";
-    private String outputFile = "";
+    private static String inputFile = "E://Work//config.txt";
+    private static String outputFile = "E://Work//result.txt";
 
     private List<Token> tokens = new ArrayList();
-    private static char[] Code;
+    int currentLine = 0;
 
+    Analyzer(){}
     Analyzer(String input,String output){
         this.inputFile=input;
         this.outputFile=output;
     }
-
-    void readFile(){}
-
-    void analyze(){
+    void start(){
+        try {
+            analyze();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
-    void start(){
 
+    //分析
+    void analyze() throws IOException {
+        List<String> lineList = new ArrayList<>();
+        List<String> wordList = new ArrayList<>();
+        Token currentToken = null;
+        try{
+            lineList = FileReadUtil.readFile(inputFile);
+            for (String line : lineList) {
+                currentLine++;
+                //判断行注释
+                if(Pattern.matches(Symbols.LINENOTE,line.trim()) ){
+                    currentToken = new Token(currentLine,"行注释", line);
+                    tokens.add(currentToken);
+                    System.out.println(currentToken);
+                    continue;
+                }
+                wordList = division(line);
+                for (String  word : wordList) {
+                    if ( isOperator(word) ) {
+                        currentToken = new Token(currentLine,"操作符", word);
+                    } else if ( isKeyword(word)) {
+                        currentToken = new Token(currentLine,"操作符", word);
+                    } else if ( isQualifiers(word)) {
+                        currentToken = new Token(currentLine,"操作符", word);
+                    }else if( isConstant(word) ){
+                        currentToken = new Token(currentLine,"操作符", word);
+                    }else if( isIdentifier(word)){
+                        currentToken = new Token(currentLine,"操作符", word);
+                    }else {
+                        currentToken = new Token(currentLine,"错误", word);
+                    }
+                    tokens.add(currentToken);
+                    System.out.println(currentToken);
+                }
+
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private static List<String> division(String s) {
+        char[] chars = s.trim().toCharArray();
+        //去除首尾空格并转化为字符数组
+        List<String> list = new ArrayList<>();
+        //保存组合出的单词和字符
+        StringBuilder sb = new StringBuilder();
+        boolean isNote = false;
+        for (int i = 0; i < chars.length; i++) {
+            while( isBlank(chars[i]) ) i++;
+
+            sb.append(chars[i]);
+        }
+        return list;
     }
 
     private static boolean isBlank (char c){
-        if( c==' '|| c=='\t' || c=='\n' ) return true;
+        return ( c==' '|| c=='\t' || c=='\n' );
+    }
+
+    //判断类型
+    private static boolean isKeyword(String s){
+       return Arrays.asList(Symbols.CONSTANTS).contains(s) ;
+    }
+    private static boolean isOperator(String s){
         return true;
     }
-    private static boolean IsCode(String s){//判断源代码是否为空，为空则不能进行词法分析
-        if (s.isEmpty()||s.toCharArray()[0]=='#') {
-            System.out.println("源代码为空，无法进行词法分析！");
-            return false;
-        }
-        else {
-            Code = s.toCharArray();
-            return true;
-
-        }
-
+    private static boolean isQualifiers(String s){
+        return Pattern.matches(Symbols.QUALIFIERS,s);
+    }
+    private static boolean isIdentifier(String s){
+        return Pattern.matches(Symbols.IDENTIFIERS,s);
+    }
+    private static boolean isConstant(String s){
+        return Pattern.matches(Symbols.CONSTANTS,s);
     }
 
-
-    public static void main(String[] args) {
-
-
-    }
 }

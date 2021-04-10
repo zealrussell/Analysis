@@ -1,9 +1,39 @@
+/**
+ *
+ * @author zeal
+ * @date  17:22
+ */
 public  class Symbols {
-    private static final String[] KEY_WORDS = {"class", "void", "function", "static",
-            "private","public","protected","char", "int", "boolean", "double", "bool","var",
-            "if", "else", "while", "do", "for", "this", "return", "null", "print"}; //关键字
-    private static final String[] IDENTIFIERS = {}; //标识符
-    private static final String[] CONSTANTS = {}; //常量
-    private static final String[] QUALIFIERS = {"abstract","const","event","extern","override","sealed","static","virtual"}; //限定符
-    private static final String[] OPERATORS = {"+","-","*","/","=","(",")","{","}"}; //操作符
+    /**
+     * 关键字
+     */
+    public static final String[] KEY_WORDS = {"class", "void", "function", "static", "private","public","protected",
+            "char", "int", "boolean", "double", "bool", "interface",
+            "var", "if", "else", "while", "do", "for", "this", "return", "null", "print"};
+    /**
+     * 标识符, 正则表达式
+     * */
+    public static final String IDENTIFIERS = "[a-zA-Z_$][a-zA-Z_0-9$]*";
+
+    /**
+     *常量，正则
+     */
+    public static final String CONSTANTS = "((\"(.*)\")|('(\\\\)?[\\p{ASCII}]')|(\\d+(\\.\\d*)?i)|(\\d*(\\.)?\\d*(E([+\\-])\\d*(\\.)?\\d*)?)|false|true)";
+    /**
+     *限定符
+     */
+    public static final String QUALIFIERS = ".|,|;|(|)|[|]|{|}";
+    /**
+     * 操作符
+     */
+    public static final String[] OPERATORS = {"+", "-", "*", "/", "+=", "-=", "*=", "/=",
+            "++", "--", "&", "|", "~", "&&", "||","<", ">", "=", "<=", ">=", "==", "!="};
+    /**
+     * 行注释
+     */
+    public static final String LINENOTE = "//[^\\n]*";
+    /**
+     * 块注释
+     */
+    public static final String BLOCKNOTE = "";
 }
