@@ -17,13 +17,22 @@ public class Analyzer {
     private static String outputFile = "E://Work//result.txt";
 
     private List<Token> tokens = new ArrayList();
-    int currentLine = 0;
+    private int currentLine = 0;
 
     Analyzer(){}
     Analyzer(String input,String output){
-        this.inputFile=input;
-        this.outputFile=output;
+        if(input != null) this.inputFile=input;
+        if(output != null) this.outputFile=output;
     }
+
+    public void setInputFile(String path){
+        this.inputFile=path;
+    }
+    public void setOutputFile(String path){
+        this.outputFile=path;
+    }
+
+    //开始分析
     void start(){
         try {
             analyze();
@@ -35,39 +44,62 @@ public class Analyzer {
 
     //分析
     void analyze() throws IOException {
-        List<String> lineList = new ArrayList<>();
-        List<String> wordList = new ArrayList<>();
+        List<String> lineList = new ArrayList<>();  //
+        List<String> wordList = new ArrayList<>();  //
         Token currentToken = null;
+        String tem = "";
+        boolean isBlockNote = false;
         try{
-            lineList = FileReadUtil.readFile(inputFile);
+            lineList = FileReadUtil.readFile(inputFile); //按行读取文件
             for (String line : lineList) {
+                line = line.trim();
                 currentLine++;
-                //判断行注释
-                if(Pattern.matches(Symbols.LINENOTE,line.trim()) ){
-                    currentToken = new Token(currentLine,"行注释", line);
-                    tokens.add(currentToken);
-                    System.out.println(currentToken);
+
+                //进行块注释处理
+                if(!isBlockNote && line.indexOf("/*") != -1) {
+                    isBlockNote = true;
+                    tem = "";
+                }
+                if(isBlockNote){
+                    tem += line;
+                    if(line.lastIndexOf("*/") == line.length()-2){
+                        isBlockNote = false;
+                        currentToken = new Token(currentLine,"块注释", tem);
+                        tokens.add(currentToken);
+                        //System.out.println(currentToken);
+                    }
                     continue;
                 }
-                wordList = division(line);
-                for (String  word : wordList) {
-                    if ( isOperator(word) ) {
-                        currentToken = new Token(currentLine,"操作符", word);
-                    } else if ( isKeyword(word)) {
-                        currentToken = new Token(currentLine,"操作符", word);
-                    } else if ( isQualifiers(word)) {
-                        currentToken = new Token(currentLine,"操作符", word);
-                    }else if( isConstant(word) ){
-                        currentToken = new Token(currentLine,"操作符", word);
-                    }else if( isIdentifier(word)){
-                        currentToken = new Token(currentLine,"操作符", word);
-                    }else {
-                        currentToken = new Token(currentLine,"错误", word);
-                    }
+
+
+                //判断行注释
+                if(Pattern.matches(Symbols.LINENOTE,line) ){
+                    currentToken = new Token(currentLine,"行注释", line);
                     tokens.add(currentToken);
-                    System.out.println(currentToken);
+                    //System.out.println(currentToken);
+                    continue;
                 }
 
+                //进行词法分析
+                wordList = division(line);
+                for (String  word : wordList) {
+                    // 关键字-》常量-》标识符-》操作符 -》分隔符-》错误
+                    if ( isKeyword(word) ) {
+                        currentToken = new Token(currentLine,"关键字", word);
+                    }else if( isConstant(word) ){
+                        currentToken = new Token(currentLine,"常  量", word);
+                    }else if( isIdentifier(word)){
+                        currentToken = new Token(currentLine,"标识符", word);
+                    }else if ( isOperator(word) ) {
+                        currentToken = new Token(currentLine,"操作符", word);
+                    }  else if ( isQualifier(word)) {
+                        currentToken = new Token(currentLine,"分隔符", word);
+                    }else {
+                        currentToken = new Token(currentLine,"错  误", word);
+                    }
+                    tokens.add(currentToken);
+                    //System.out.println(currentToken);
+                }
             }
         }catch(IOException e){
             e.printStackTrace();
@@ -75,33 +107,45 @@ public class Analyzer {
 
     }
 
+    /***-----------分解出单词-----------***/
     private static List<String> division(String s) {
         char[] chars = s.trim().toCharArray();
+        boolean isNote = false;
+        int lastIndex = 0;
         //去除首尾空格并转化为字符数组
         List<String> list = new ArrayList<>();
         //保存组合出的单词和字符
         StringBuilder sb = new StringBuilder();
-        boolean isNote = false;
-        for (int i = 0; i < chars.length; i++) {
-            while( isBlank(chars[i]) ) i++;
 
+        for (int i = 0; i < chars.length; i++) {
+//            if (isOperator(String.valueOf(chars[i]))||
+//                isQualifier(String.valueOf(chars[i])) ||
+//                isBlank(chars[i]) ) {
+            //通过空格和分隔符 分隔
+            if( isQualifier(String.valueOf(chars[i])) ||isBlank(chars[i])){
+                if (sb.length() != 0) list.add(sb.toString().replaceAll(" ", ""));
+                if (!isBlank(chars[i]) ) list.add(String.valueOf(chars[i]));
+                sb.delete(0, sb.length());  //清空StringBuilder
+                continue;
+            }
             sb.append(chars[i]);
         }
         return list;
     }
 
+    /**-------------是否是空字符---------***/
     private static boolean isBlank (char c){
         return ( c==' '|| c=='\t' || c=='\n' );
     }
 
-    //判断类型
+    /**--------------判 断 类 型-------**/
     private static boolean isKeyword(String s){
-       return Arrays.asList(Symbols.CONSTANTS).contains(s) ;
+       return Pattern.matches(Symbols.KEY_WORDS,s);
     }
     private static boolean isOperator(String s){
-        return true;
+        return Pattern.matches(Symbols.OPERATORS,s);
     }
-    private static boolean isQualifiers(String s){
+    private static boolean isQualifier(String s){
         return Pattern.matches(Symbols.QUALIFIERS,s);
     }
     private static boolean isIdentifier(String s){
@@ -111,4 +155,8 @@ public class Analyzer {
         return Pattern.matches(Symbols.CONSTANTS,s);
     }
 
+    public static void main(String[] args) {
+        Analyzer az = new Analyzer();
+        az.start();
+    }
 }

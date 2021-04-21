@@ -7,9 +7,7 @@ public  class Symbols {
     /**
      * 关键字
      */
-    public static final String[] KEY_WORDS = {"class", "void", "function", "static", "private","public","protected",
-            "char", "int", "boolean", "double", "bool", "interface",
-            "var", "if", "else", "while", "do", "for", "this", "return", "null", "print"};
+    public static final String KEY_WORDS = "class|void|function|static|private|public|protected|char|int|boolean|double|bool|interface|var|if|else|while|do|for|this|return|null|print";
     /**
      * 标识符, 正则表达式
      * */
@@ -20,14 +18,13 @@ public  class Symbols {
      */
     public static final String CONSTANTS = "((\"(.*)\")|('(\\\\)?[\\p{ASCII}]')|(\\d+(\\.\\d*)?i)|(\\d*(\\.)?\\d*(E([+\\-])\\d*(\\.)?\\d*)?)|false|true)";
     /**
-     *限定符
+     *分隔符，终结 { } . , ; ( ) [ ]
      */
-    public static final String QUALIFIERS = ".|,|;|(|)|[|]|{|}";
+    public static final String QUALIFIERS = ",|;|\\(|\\)|\\[|\\]|\\{|\\}|'|\"";
     /**
-     * 操作符
+     * 运算符
      */
-    public static final String[] OPERATORS = {"+", "-", "*", "/", "+=", "-=", "*=", "/=",
-            "++", "--", "&", "|", "~", "&&", "||","<", ">", "=", "<=", ">=", "==", "!="};
+    public static final String OPERATORS  = "\\+|-|\\*|/|\\+=|-=|\\*=|/=|\\+\\+|--|&&|&|<|>|=|<=|>=|==|!=|~|\\||\\|||<<|>>";
     /**
      * 行注释
      */

@@ -19,15 +19,17 @@ public class Token {
         this.line = line;
         this.type = type;
         this.message = message;
+        System.out.println(this);
     }
 
     @Override
     public String toString() {
-        return "Token{" +
-                "line=" + line + "\t\t"+
-                ", type='" + type + '\'' + "\t\t"+
+        return "Token{ " +
+                "line=" + line + "\t"+
+                ", type='" + type + '\''+ "\t"+
                 ", message='" + message + '\'' +
-                '}';
+                " }";
+
     }
 
 }
