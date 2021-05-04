@@ -1,7 +1,7 @@
-import javax.sound.sampled.LineListener;
+package Lexer;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 
 public class Analyzer {
 
-    private static String inputFile = "E://Work//config.txt";
-    private static String outputFile = "E://Work//result.txt";
+    private static String inputFile = "D:\\TestJava\\Analysis\\InputFile\\config.txt";
+    private static String outputFile = "D:\\TestJava\\Analysis\\OutputFile\\result.txt";
 
     private List<Token> tokens = new ArrayList();
     private int currentLine = 0;
@@ -32,17 +32,18 @@ public class Analyzer {
         this.outputFile=path;
     }
 
-    //å¼€å§‹åˆ†æ
+    //¿ªÊ¼·ÖÎö
     void start(){
         try {
             analyze();
+            FileReadUtil.saveFile(outputFile,tokens);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    //åˆ†æ
+    //·ÖÎö
     void analyze() throws IOException {
         List<String> lineList = new ArrayList<>();  //
         List<String> wordList = new ArrayList<>();  //
@@ -50,12 +51,12 @@ public class Analyzer {
         String tem = "";
         boolean isBlockNote = false;
         try{
-            lineList = FileReadUtil.readFile(inputFile); //æŒ‰è¡Œè¯»å–æ–‡ä»¶
+            lineList = FileReadUtil.readFile(inputFile); //°´ĞĞ¶ÁÈ¡ÎÄ¼ş
             for (String line : lineList) {
                 line = line.trim();
                 currentLine++;
 
-                //è¿›è¡Œå—æ³¨é‡Šå¤„ç†
+                //½øĞĞ¿é×¢ÊÍ´¦Àí
                 if(!isBlockNote && line.indexOf("/*") != -1) {
                     isBlockNote = true;
                     tem = "";
@@ -64,7 +65,7 @@ public class Analyzer {
                     tem += line;
                     if(line.lastIndexOf("*/") == line.length()-2){
                         isBlockNote = false;
-                        currentToken = new Token(currentLine,"å—æ³¨é‡Š", tem);
+                        currentToken = new Token(currentLine,"¿é×¢ÊÍ", tem);
                         tokens.add(currentToken);
                         //System.out.println(currentToken);
                     }
@@ -72,30 +73,30 @@ public class Analyzer {
                 }
 
 
-                //åˆ¤æ–­è¡Œæ³¨é‡Š
+                //ÅĞ¶ÏĞĞ×¢ÊÍ
                 if(Pattern.matches(Symbols.LINENOTE,line) ){
-                    currentToken = new Token(currentLine,"è¡Œæ³¨é‡Š", line);
+                    currentToken = new Token(currentLine,"ĞĞ×¢ÊÍ", line);
                     tokens.add(currentToken);
                     //System.out.println(currentToken);
                     continue;
                 }
 
-                //è¿›è¡Œè¯æ³•åˆ†æ
+                //½øĞĞ´Ê·¨·ÖÎö
                 wordList = division(line);
                 for (String  word : wordList) {
-                    // å…³é”®å­—-ã€‹å¸¸é‡-ã€‹æ ‡è¯†ç¬¦-ã€‹æ“ä½œç¬¦ -ã€‹åˆ†éš”ç¬¦-ã€‹é”™è¯¯
+                    // ¹Ø¼ü×Ö-¡·³£Á¿-¡·±êÊ¶·û-¡·²Ù×÷·û -¡··Ö¸ô·û-¡·´íÎó
                     if ( isKeyword(word) ) {
-                        currentToken = new Token(currentLine,"å…³é”®å­—", word);
+                        currentToken = new Token(currentLine,"¹Ø¼ü×Ö", word);
                     }else if( isConstant(word) ){
-                        currentToken = new Token(currentLine,"å¸¸  é‡", word);
+                        currentToken = new Token(currentLine,"³£  Á¿", word);
                     }else if( isIdentifier(word)){
-                        currentToken = new Token(currentLine,"æ ‡è¯†ç¬¦", word);
+                        currentToken = new Token(currentLine,"±êÊ¶·û", word);
                     }else if ( isOperator(word) ) {
-                        currentToken = new Token(currentLine,"æ“ä½œç¬¦", word);
+                        currentToken = new Token(currentLine,"²Ù×÷·û", word);
                     }  else if ( isQualifier(word)) {
-                        currentToken = new Token(currentLine,"åˆ†éš”ç¬¦", word);
+                        currentToken = new Token(currentLine,"·Ö¸ô·û", word);
                     }else {
-                        currentToken = new Token(currentLine,"é”™  è¯¯", word);
+                        currentToken = new Token(currentLine,"´í  Îó", word);
                     }
                     tokens.add(currentToken);
                     //System.out.println(currentToken);
@@ -107,25 +108,25 @@ public class Analyzer {
 
     }
 
-    /***-----------åˆ†è§£å‡ºå•è¯-----------***/
+    /***-----------·Ö½â³öµ¥´Ê-----------***/
     private static List<String> division(String s) {
         char[] chars = s.trim().toCharArray();
         boolean isNote = false;
         int lastIndex = 0;
-        //å»é™¤é¦–å°¾ç©ºæ ¼å¹¶è½¬åŒ–ä¸ºå­—ç¬¦æ•°ç»„
+        //È¥³ıÊ×Î²¿Õ¸ñ²¢×ª»¯Îª×Ö·ûÊı×é
         List<String> list = new ArrayList<>();
-        //ä¿å­˜ç»„åˆå‡ºçš„å•è¯å’Œå­—ç¬¦
+        //±£´æ×éºÏ³öµÄµ¥´ÊºÍ×Ö·û
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < chars.length; i++) {
 //            if (isOperator(String.valueOf(chars[i]))||
 //                isQualifier(String.valueOf(chars[i])) ||
 //                isBlank(chars[i]) ) {
-            //é€šè¿‡ç©ºæ ¼å’Œåˆ†éš”ç¬¦ åˆ†éš”
+            //Í¨¹ı¿Õ¸ñºÍ·Ö¸ô·û ·Ö¸ô
             if( isQualifier(String.valueOf(chars[i])) ||isBlank(chars[i])){
                 if (sb.length() != 0) list.add(sb.toString().replaceAll(" ", ""));
                 if (!isBlank(chars[i]) ) list.add(String.valueOf(chars[i]));
-                sb.delete(0, sb.length());  //æ¸…ç©ºStringBuilder
+                sb.delete(0, sb.length());  //Çå¿ÕStringBuilder
                 continue;
             }
             sb.append(chars[i]);
@@ -133,12 +134,12 @@ public class Analyzer {
         return list;
     }
 
-    /**-------------æ˜¯å¦æ˜¯ç©ºå­—ç¬¦---------***/
+    /**-------------ÊÇ·ñÊÇ¿Õ×Ö·û---------***/
     private static boolean isBlank (char c){
         return ( c==' '|| c=='\t' || c=='\n' );
     }
 
-    /**--------------åˆ¤ æ–­ ç±» å‹-------**/
+    /**--------------ÅĞ ¶Ï Àà ĞÍ-------**/
     private static boolean isKeyword(String s){
        return Pattern.matches(Symbols.KEY_WORDS,s);
     }

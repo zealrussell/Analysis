@@ -1,3 +1,5 @@
+package Lexer;
+
 /**
  *
  * @author zeal
@@ -5,32 +7,32 @@
  */
 public  class Symbols {
     /**
-     * å…³é”®å­—
+     * ¹Ø¼ü×Ö
      */
     public static final String KEY_WORDS = "class|void|function|static|private|public|protected|char|int|boolean|double|bool|interface|var|if|else|while|do|for|this|return|null|print";
     /**
-     * æ ‡è¯†ç¬¦, æ­£åˆ™è¡¨è¾¾å¼
+     * ±êÊ¶·û, ÕıÔò±í´ïÊ½
      * */
     public static final String IDENTIFIERS = "[a-zA-Z_$][a-zA-Z_0-9$]*";
 
     /**
-     *å¸¸é‡ï¼Œæ­£åˆ™
+     *³£Á¿£¬ÕıÔò
      */
     public static final String CONSTANTS = "((\"(.*)\")|('(\\\\)?[\\p{ASCII}]')|(\\d+(\\.\\d*)?i)|(\\d*(\\.)?\\d*(E([+\\-])\\d*(\\.)?\\d*)?)|false|true)";
     /**
-     *åˆ†éš”ç¬¦ï¼Œç»ˆç»“ { } . , ; ( ) [ ]
+     *·Ö¸ô·û£¬ÖÕ½á { } . , ; ( ) [ ]
      */
     public static final String QUALIFIERS = ",|;|\\(|\\)|\\[|\\]|\\{|\\}|'|\"";
     /**
-     * è¿ç®—ç¬¦
+     * ÔËËã·û
      */
     public static final String OPERATORS  = "\\+|-|\\*|/|\\+=|-=|\\*=|/=|\\+\\+|--|&&|&|<|>|=|<=|>=|==|!=|~|\\||\\|||<<|>>";
     /**
-     * è¡Œæ³¨é‡Š
+     * ĞĞ×¢ÊÍ
      */
     public static final String LINENOTE = "//[^\\n]*";
     /**
-     * å—æ³¨é‡Š
+     * ¿é×¢ÊÍ
      */
     public static final String BLOCKNOTE = "";
 }

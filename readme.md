@@ -8,10 +8,10 @@
 
 
 ####文件布局：
->- Analyzer        &nbsp;&nbsp;&nbsp;&nbsp;// _词法分析器主类_
->- FileReadUtil    &nbsp;&nbsp;&nbsp;&nbsp;// _处理输入文件_
->- Symbols         &nbsp;&nbsp;&nbsp;&nbsp;// _定义匹配规则_
->- Token           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// _Token类_
+>- Lexer.Analyzer        &nbsp;&nbsp;&nbsp;&nbsp;// _词法分析器主类_
+>- Lexer.FileReadUtil    &nbsp;&nbsp;&nbsp;&nbsp;// _处理输入文件_
+>- Lexer.Symbols         &nbsp;&nbsp;&nbsp;&nbsp;// _定义匹配规则_
+>- Lexer.Token           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// _Token类_
 
 ####匹配规则:
 >- `CONSTANTS = "((\"(.*)\")|('(\\\\)?[\\p{ASCII}]')|(\\d+(\\.\\d*)?i)|(\\d*(\\.)?\\d*(E([+\\-])\\d*(\\.)?\\d*)?)|false|true)";`
@@ -25,4 +25,5 @@
 
 ###_任务2：语法分析_
 ***
+
 

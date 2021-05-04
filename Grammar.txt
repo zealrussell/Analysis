@@ -1,0 +1,60 @@
+一个可能有用的文法式子，我自己反正没有调试好。。。。
+S' -> program
+program -> function_definition_list
+program -> variable_definition_list function_definition_list
+function_definition_list -> function_definition
+function_definition_list -> function_definition function_definition_list
+function_definition -> return_type function_name compound_statement
+return_type -> VOID
+return_type -> INT
+function_name -> ID ( )
+function_name -> ID ( parameter_list )
+parameter_list -> parameter_declaration
+parameter_list -> parameter_declaration , parameter_list
+parameter_declaration -> INT ID
+compound_statement -> { }
+compound_statement -> { variable_definition_list }
+compound_statement -> { statement_list }
+compound_statement -> { variable_definition_list statement_list }
+variable_definition_list -> variable_definition
+variable_definition_list -> variable_definition variable_definition_list
+variable_definition -> INT ID ;
+statement_list -> statement
+statement_list -> statement statement_list
+statement -> compound_statement
+statement -> expression_statement
+statement -> selection_statement
+statement -> iteration_statement
+statement -> jump_statement
+expression_statement -> ;
+expression_statement -> expression ;
+selection_statement -> IF ( expression ) statement
+selection_statement -> IF ( expression ) statement ELSE statement
+iteration_statement -> WHILE ( expression ) statement
+jump_statement -> RETURN ;
+jump_statement -> RETURN expression ;
+expression -> assignment_expression
+expression -> assignment_expression , expression
+assignment_expression -> ID = assignment_expression
+assignment_expression -> equality_expression
+equality_expression -> relational_expression
+equality_expression -> relational_expression == equality_expression
+equality_expression -> relational_expression != equality_expression
+relational_expression -> additive_expression
+relational_expression -> additive_expression < relational_expression
+relational_expression -> additive_expression > relational_expression
+relational_expression -> additive_expression <= relational_expression
+relational_expression -> additive_expression >= relational_expression
+additive_expression -> multiplicative_expression
+additive_expression -> multiplicative_expression + additive_expression
+additive_expression -> multiplicative_expression - additive_expression
+multiplicative_expression -> unary_expression
+multiplicative_expression -> unary_expression * multiplicative_expression
+multiplicative_expression -> unary_expression / multiplicative_expression
+unary_expression -> primary_expression
+unary_expression -> unary_operator unary_expression
+primary_expression -> ID
+primary_expression -> NUM
+primary_expression -> ( expression )
+unary_operator -> +
+unary_operator -> -

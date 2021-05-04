@@ -1,20 +1,46 @@
+package Lexer;
 
 /**
  * @author zeal
  */
 public class Token {
     /**
-     * 琛屽彿
+     * 行号
      */
     private int line;
     /**
-     * 绫诲瀷
+     * 类型
      */
     private String type;
     /**
-     * 淇℃伅
+     * 信息
      */
     private String message;
+
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public Token(int line, String type, String message) {
         this.line = line;
         this.type = type;
@@ -24,7 +50,7 @@ public class Token {
 
     @Override
     public String toString() {
-        return "Token{ " +
+        return "Lexer.Token{ " +
                 "line=" + line + "\t"+
                 ", type='" + type + '\''+ "\t"+
                 ", message='" + message + '\'' +
