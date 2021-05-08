@@ -3,13 +3,16 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/output.txt" charset="GBK" />
     <file url="file://$PROJECT_DIR$/produce.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/LL1/FileReadUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/LL1/LL.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/LL1/Production.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/LR1/ActionTable.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/LR1/GoTo.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/LR1/GoToTable.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/LR1/ItemTable.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/LR1/LR.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/LR1/LRClosure.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/LR1/WordStack.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/LR1/Utils/MyStack.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/LR1/eneity/FirstFollow.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/LR1/eneity/Item.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/LR1/eneity/ItemSet.java" charset="GBK" />

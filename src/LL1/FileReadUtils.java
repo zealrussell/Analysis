@@ -11,14 +11,14 @@ import java.util.ArrayList;
  * @date 2021/5/3 18:56
  */
 public class FileReadUtils {
-    //è¯»å–ç±»
+    //¶ÁÈ¡Àà
     public static void readToReader(String filePath,ArrayList<Integer> reader) throws IOException {
         InputStream is = new FileInputStream(filePath);
         String line;
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         line = br.readLine();
         while (line != null) {
-            //åˆ‡åˆ†è¯»å– ç±»å·
+            //ÇĞ·Ö¶ÁÈ¡ ÀàºÅ
             int pos = line.indexOf(",");
             reader.add(Integer.valueOf(line.substring(0, pos)));
             line = br.readLine();

@@ -1,6 +1,7 @@
 package LR1;
 
 import LR1.Utils.FileUtils;
+import LR1.Utils.MyStack;
 import LR1.eneity.Production;
 import LR1.eneity.ProductionList;
 
@@ -110,6 +111,84 @@ public class LR {
         return goToTable.gotoTable[x][y];
     }
 
+    /*
+     * 进行分析
+     */
+    public static void analyse(String grammarPath,String sourcePath, String actionPath, String gotoPath){
+
+        ProductionList productionList = new ProductionList(grammarPath);
+        LR LR = new LR(productionList);
+
+        MyStack stack = new MyStack();
+        stack.push("I0");
+
+        String action = "";
+        int wordID = 0;
+        List<String> words = null;
+
+        //读取 词法分析器产生 的token
+        try {
+            words = FileUtils.readWord(sourcePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (!action.equals("ACC") && wordID <= words.size()) {
+            // 读取当前输入符号和栈顶部状态
+            String word = words.get(wordID);
+            String top = stack.getTop();
+            action = LR.searchActionTable(word, top);
+
+            //System.out.println("word：" + word);
+            //System.out.println("top：" + top);
+            //System.out.println("action：" + action);
+
+            if (action.equals("ACC")) {
+                break;
+            } else if (action.contains("s")) {
+                action = action.replaceAll("s", "");
+                System.out.println("移入: " + word);
+                wordID++;
+                stack.push(action);
+            } else if (action.contains("r")) {
+                stack.printStack();
+                int productionId = Integer.parseInt(action.replaceAll("r", ""));
+                Production production = productionList.getProductions().get(productionId);
+                System.out.println("规约: " + production);
+                int r = productionList.getProductions().get(productionId).getRight().length;
+                while (r > 0) {
+                    //System.out.println("Parse.main()");
+                    //System.out.println("已规约项目: " + stack.pop() );
+                    stack.pop();
+                    r--;
+                }
+                // word = production.getLeft();
+                System.out.println("__________________________________");
+                //System.out.println(production.getLeft());
+                //System.out.println(LR.searchGotoTable(stack.getTop(),
+                //        productionList.getProductions().get(productionId).getLeft()));
+                stack.push(LR.searchGotoTable(stack.getTop(),
+                        productionList.getProductions().get(productionId).getLeft()));
+            } else {
+                throw new Error("第:"+wordID+"个 出现错误！");
+            }
+        }
+
+        if (action.equals("ACC") && wordID == words.size() - 1) {
+            System.out.println();
+            System.out.println("-----------------YES------------------");
+        }
+
+        //保存分析表
+        try {
+            FileUtils.saveGoToTable(gotoPath, LR.goToTable);
+            FileUtils.saveActionTabel(actionPath, LR.actionTable);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     public static void main(String[] args) {
 
         /**注释了，可能有用*/
@@ -126,7 +205,7 @@ public class LR {
         //System.out.println(parse.toString());
         //System.out.println(productionList.productions);
 
-        WordStack stack = new WordStack();
+        MyStack stack = new MyStack();
         stack.push("I0");
 
         String action = "";

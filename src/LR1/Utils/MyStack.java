@@ -1,4 +1,4 @@
-package LR1;
+package LR1.Utils;
 
 import java.util.Enumeration;
 import java.util.Stack;
@@ -7,7 +7,7 @@ import java.util.Stack;
  * ’ª¿‡
  *
  */
-public class WordStack {
+public class MyStack {
     Stack<String> wordStack = new Stack<>();
 
     public String pop() {

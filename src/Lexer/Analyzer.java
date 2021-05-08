@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 
 public class Analyzer {
 
-    private static String inputFile = "D:\\TestJava\\Analysis\\InputFile\\config.txt";
-    private static String outputFile = "D:\\TestJava\\Analysis\\OutputFile\\result.txt";
+    private static String inputFile = "InputFile\\LexInput.txt";
+    private static String outputFile = "OutputFile\\LexOutput.txt";
 
     private List<Token> tokens = new ArrayList();
     private int currentLine = 0;

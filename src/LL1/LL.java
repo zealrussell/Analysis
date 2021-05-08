@@ -12,18 +12,18 @@ import java.util.HashMap;
  * @date 2021/5/3 18:53
  */
 public class LL {
-    private static ArrayList<String> stack = new ArrayList<>(); // å½“å‰æ ˆ
-    private static ArrayList<Integer> reader = new ArrayList<>(); // å¾…è¯»é˜Ÿåˆ—
-    private static Production[] productions = new Production[42]; // äº§ç”Ÿå¼æ•°ç»„
-    private static HashMap<Integer, String> i2sMap; // ç§åˆ«ç Mapï¼Œç§åˆ«ç ä¸ºé”®ï¼Œå•è¯ä¸ºå€¼
-    private static HashMap<String, Integer> s2iMap; // ç§åˆ«ç Mapï¼Œå•è¯ä¸ºé”®ï¼Œç§åˆ«ç ä¸ºå€¼
+    private static ArrayList<String> stack = new ArrayList<>(); // µ±Ç°Õ»
+    private static ArrayList<Integer> reader = new ArrayList<>(); // ´ı¶Á¶ÓÁĞ
+    private static Production[] productions = new Production[42]; // ²úÉúÊ½Êı×é
+    private static HashMap<Integer, String> i2sMap; // ÖÖ±ğÂëMap£¬ÖÖ±ğÂëÎª¼ü£¬µ¥´ÊÎªÖµ
+    private static HashMap<String, Integer> s2iMap; // ÖÖ±ğÂëMap£¬µ¥´ÊÎª¼ü£¬ÖÖ±ğÂëÎªÖµ
 
-    //å…¥æ ˆã€‚ è¯»å–é—­åŒ…
+    //ÈëÕ»¡£ ¶ÁÈ¡±Õ°ü
     private static int stackPush(int stackTop, Production production) {
         int len = production.r_str.length;
         stack.remove(stackTop);
-        //å¦‚æœå³è¾¹ä¸ä¸ºç©ºï¼Œå°±æŠŠåŠ å…¥
-        if ("Îµ".equals(production.r_str[0])) {
+        //Èç¹ûÓÒ±ß²»Îª¿Õ£¬¾Í°Ñ¼ÓÈë
+        if ("¦Å".equals(production.r_str[0])) {
         } else {
             for (int i = len - 1; i >= 0; i--) {
                 stack.add(production.r_str[i]);
@@ -33,7 +33,7 @@ public class LL {
         return -1;
     }
 
-    // åˆ©ç”¨LL(1)é¢„æµ‹åˆ†æè¡¨è¿›è¡Œåˆ†æ
+    // ÀûÓÃLL(1)Ô¤²â·ÖÎö±í½øĞĞ·ÖÎö
     private static int ll1_table(int stackTop, int readerTop) {
         if ("S".equals(stack.get(stackTop))) {
             if ("char".equals(i2sMap.get(reader.get(readerTop)))) {
@@ -270,14 +270,14 @@ public class LL {
                 return -1;
             }
         } else {
-            System.out.println("è¯­æ³•é”™è¯¯");
+            System.out.println("Óï·¨´íÎó");
         }
         return -1;
     }
 
     private static boolean match(int stackTop, int readerTop) {
         try {
-            int stackTopVal = Integer.valueOf(stack.get(stackTop)); // æœªæŠ›å‡ºå¼‚å¸¸è¯´æ˜æ˜¯ç»ˆç»“ç¬¦
+            int stackTopVal = Integer.valueOf(stack.get(stackTop)); // Î´Å×³öÒì³£ËµÃ÷ÊÇÖÕ½á·û
             if (stackTopVal == reader.get(0)) {
                 stack.remove(stackTop);
                 reader.remove(readerTop);
@@ -286,12 +286,12 @@ public class LL {
                 return false;
             }
         } catch (NumberFormatException e) {
-            // æŠ›å‡ºå¼‚å¸¸è¯´æ˜æ˜¯éç»ˆç»“ç¬¦
+            // Å×³öÒì³£ËµÃ÷ÊÇ·ÇÖÕ½á·û
             return false;
         }
     }
 
-    //å®šä¹‰è¯­æ³•è§„åˆ™
+    //¶¨ÒåÓï·¨¹æÔò
     private static void initProductions() {
         productions[0] = new Production("S",
                 new String[]{"A", "L", String.valueOf(s2iMap.get(";"))},
@@ -306,8 +306,8 @@ public class LL {
                 new String[]{String.valueOf(s2iMap.get("while")), String.valueOf(s2iMap.get("(")), "X", String.valueOf(s2iMap.get(")")), String.valueOf(s2iMap.get("{")), "S", String.valueOf(s2iMap.get("}"))},
                 "S --> while(X){S}");
         productions[4] = new Production("S",
-                new String[]{"Îµ"},
-                "S --> Îµ");
+                new String[]{"¦Å"},
+                "S --> ¦Å");
         productions[5] = new Production("B",
                 new String[]{String.valueOf(s2iMap.get("(")), "L", String.valueOf(s2iMap.get(")")), String.valueOf(s2iMap.get(";"))},
                 "B --> (L);");
@@ -321,14 +321,14 @@ public class LL {
                 new String[]{String.valueOf(s2iMap.get(",")), String.valueOf(s2iMap.get("id")), "L'"},
                 "L' --> ,id L'");
         productions[9] = new Production("L'",
-                new String[]{"Îµ"},
-                "L' --> Îµ");
+                new String[]{"¦Å"},
+                "L' --> ¦Å");
         productions[10] = new Production("Q",
                 new String[]{String.valueOf(s2iMap.get("else")), String.valueOf(s2iMap.get("{")), "S", String.valueOf(s2iMap.get("}"))},
                 "Q --> else{S}");
         productions[11] = new Production("Q",
-                new String[]{"Îµ"},
-                "Q --> Îµ");
+                new String[]{"¦Å"},
+                "Q --> ¦Å");
         productions[12] = new Production("X",
                 new String[]{"E", "R", "E"},
                 "X --> ERE");
@@ -345,8 +345,8 @@ public class LL {
                 new String[]{"M", "E'"},
                 "E' --> ME'");
         productions[17] = new Production("E'",
-                new String[]{"Îµ"},
-                "E' --> Îµ");
+                new String[]{"¦Å"},
+                "E' --> ¦Å");
         productions[18] = new Production("M",
                 new String[]{String.valueOf(s2iMap.get("+")), "T"},
                 "M --> +T");
@@ -360,8 +360,8 @@ public class LL {
                 new String[]{"N", "T'"},
                 "T' --> NT'");
         productions[22] = new Production("T'",
-                new String[]{"Îµ"},
-                "T' --> Îµ");
+                new String[]{"¦Å"},
+                "T' --> ¦Å");
         productions[23] = new Production("N",
                 new String[]{String.valueOf(s2iMap.get("*")), "F"},
                 "N --> *F");
@@ -399,8 +399,8 @@ public class LL {
                 new String[]{"S", "S'"},
                 "S' --> SS'");
         productions[35] = new Production("S'",
-                new String[]{"Îµ"},
-                "S' --> Îµ");
+                new String[]{"¦Å"},
+                "S' --> ¦Å");
         productions[36] = new Production("A",
                 new String[]{String.valueOf(s2iMap.get("char"))},
                 "A --> char");
@@ -421,7 +421,7 @@ public class LL {
                 "A --> double");
     }
 
-    //å®šä¹‰
+    //¶¨Òå
     private static void initMap() {
         s2iMap = new HashMap<>();
         s2iMap.put("char", 1);
@@ -509,34 +509,34 @@ public class LL {
     public static void start(String inputFilePath,String outputFilePath){
         int stackTop = 1;
         int readerTop = 0;
-        // å½“å‰æ­¥éª¤æ•°
+        // µ±Ç°²½ÖèÊı
         int index = 0;
 
         initMap();
         initProductions();
 
-        // åœ¨stackåº•éƒ¨åŠ ä¸Š$,ä½œä¸ºç»“æŸ
+        // ÔÚstackµ×²¿¼ÓÉÏ$,×÷Îª½áÊø
         stack.add(0, String.valueOf(s2iMap.get("$")));
-        // 'S' å…¥æ ˆ
+        // 'S' ÈëÕ»
         stack.add(stackTop, "S'");
         String inputFile = inputFilePath;
-        StringBuffer outputBuffer = new StringBuffer(); // è¾“å‡ºåˆ°æ–‡ä»¶çš„StringBuffer
+        StringBuffer outputBuffer = new StringBuffer(); // Êä³öµ½ÎÄ¼şµÄStringBuffer
 
-        // è¯»å…¥è¯æ³•åˆ†æå™¨ Token ç»“æœ
+        // ¶ÁÈë´Ê·¨·ÖÎöÆ÷ Token ½á¹û
         try {
             FileReadUtils.readToReader(inputFile,reader);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // åœ¨readeræœ«å°¾åŠ ä¸Š$
+        // ÔÚreaderÄ©Î²¼ÓÉÏ$
         reader.add(s2iMap.get("$"));
 
-        //LR1åˆ†æ
+        //LR1·ÖÎö
         while (stackTop >= 0) {
-            System.out.printf("%-6s", "ç¬¬" + ++index + "æ­¥ï¼š");
-            System.out.printf("%-10s", "å½“å‰æ ˆï¼š");
-            outputBuffer.append("ç¬¬" + index + "æ­¥ï¼š    å½“å‰æ ˆï¼š");
-            // å¼•å…¥StringBufferä»…ä¸ºæ§åˆ¶åœ¨æ§åˆ¶å°çš„è¾“å‡ºæ ¼å¼å¯¹é½
+            System.out.printf("%-6s", "µÚ" + ++index + "²½£º");
+            System.out.printf("%-10s", "µ±Ç°Õ»£º");
+            outputBuffer.append("µÚ" + index + "²½£º    µ±Ç°Õ»£º");
+            // ÒıÈëStringBuffer½öÎª¿ØÖÆÔÚ¿ØÖÆÌ¨µÄÊä³ö¸ñÊ½¶ÔÆë
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i <= stackTop; i++) {
                 String str = null;
@@ -552,8 +552,8 @@ public class LL {
                 }
             }
             System.out.printf("%-30s", sb.toString());
-            System.out.print("å¾…è¯»é˜Ÿåˆ—ï¼š");
-            outputBuffer.append("             å¾…è¯»é˜Ÿåˆ—ï¼š");
+            System.out.print("´ı¶Á¶ÓÁĞ£º");
+            outputBuffer.append("             ´ı¶Á¶ÓÁĞ£º");
             sb = new StringBuffer();
             for (int i = 0; i < reader.size(); i++) {
                 sb.append(i2sMap.get(reader.get(i)) + " ");
@@ -567,21 +567,21 @@ public class LL {
                 outputBuffer.append("\n");
             } else {
                 int i = ll1_table(stackTop, readerTop);
-                stackTop += stackPush(stackTop, productions[i]); // å‹æ ˆ
-                System.out.printf("%-30s", "ä¸‹ä¸€æ­¥æ‰€ç”¨äº§ç”Ÿå¼ï¼š" + productions[i].prod);
+                stackTop += stackPush(stackTop, productions[i]); // Ñ¹Õ»
+                System.out.printf("%-30s", "ÏÂÒ»²½ËùÓÃ²úÉúÊ½£º" + productions[i].prod);
                 System.out.println();
-                outputBuffer.append("         ä¸‹ä¸€æ­¥æ‰€ç”¨äº§ç”Ÿå¼ï¼š" + productions[i].prod + "\n");
+                outputBuffer.append("         ÏÂÒ»²½ËùÓÃ²úÉúÊ½£º" + productions[i].prod + "\n");
             }
         }
-        //åˆ†ææˆåŠŸ
+        //·ÖÎö³É¹¦
         if (stackTop == -1) {
-            System.out.println("è¯­æ³•åˆ†ææˆåŠŸ");
+            System.out.println("Óï·¨·ÖÎö³É¹¦");
             outputBuffer.append("Accept");
         }
 
 
         String outputPath = outputFilePath;
-        // å°†StringBufferçš„å†…å®¹è¾“å‡ºåˆ°æ–‡ä»¶
+        // ½«StringBufferµÄÄÚÈİÊä³öµ½ÎÄ¼ş
         File outputFile = new File(outputPath);
         if (outputFile.exists()) {
             outputFile.delete();
@@ -602,8 +602,8 @@ public class LL {
 
     public static void main(String[] args) {
         LL ll = new LL();
-        String input = "";
-        String output = "";
+        String input = "D:\\TestJava\\Analysis\\InputFile\\LL1Input.txt";
+        String output = "D:\\TestJava\\Analysis\\OutputFile\\LL1output.txt";
         ll.start(input,output);
     }
 }

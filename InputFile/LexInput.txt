@@ -1,4 +1,4 @@
-include < id > ; 
+include < id > ;
 void id ( int id )
 {
 	int[digit] id;
@@ -9,7 +9,7 @@ void id ( int id )
 	 id = id * id;
 	 }
 	  id = id * id;
-	  }; 
+	  };
  if( id != id )
  {
 	 while(id > id)
@@ -19,20 +19,21 @@ void id ( int id )
 	 id = id * id;
 	 }
 	  id = id * id;
-	  }; 
+	  };
 	 id = id * id;
 	 }
 }
- 
+
  void id ( int id )
 {
  while( id < id )
   do{
 	  id[id] = (digit) - id * id + id;
-	  }; 
+	  };
  if(id != id)
  {
 	 id = id * id;
 	 }
  }
+$
 $

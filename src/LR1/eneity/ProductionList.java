@@ -1,6 +1,7 @@
 package LR1.eneity;
 
-import utils.FileOpt;
+
+import LR1.Utils.FileOpt;
 
 import java.io.IOException;
 import java.util.ArrayList;

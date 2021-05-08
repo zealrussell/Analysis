@@ -29,13 +29,14 @@ public class FileReadUtil {
      * ±¨´ætoken
      */
     public static void saveFile(String path,List<Token> tokens) throws IOException{
-        String outputPath = "E://Work//result.txt";
+        String outputPath = "OutputFile//Token.txt";
         if(path != null ) outputPath = path;
         BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath));
         for(Token t:tokens){
             writer.write(t.getMessage());
             writer.newLine();
         }
+        writer.write("$");
         writer.close();
     }
 
